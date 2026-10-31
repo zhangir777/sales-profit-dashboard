@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Online Store: Sales &amp; Profit</title>
+<style>
+  :root {
+    --bg: #f4f6fa; --card: #ffffff; --text: #18202f; --muted: #667085; --line: #e4e8ef;
+    --sales: #2f6fed; --profit: #12a150; --ads: #f29a1f; --neg: #d92d20;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.45 "Segoe UI", system-ui, -apple-system, sans-serif; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 24px 16px 40px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px;
+           margin-bottom: 18px; }
+  h1 { font-size: 26px; margin: 0; }
+  .period { color: var(--muted); }
+  .badge { background: #fff4e5; color: #9a5b00; border: 1px solid #f5d39c; border-radius: 99px;
+           padding: 2px 10px; font-size: 13px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .tile, .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  .tile { padding: 14px 16px; }
+  .label { color: var(--muted); font-size: 13px; }
+  .value { font-size: 26px; font-weight: 700; margin: 2px 0; font-variant-numeric: tabular-nums; }
+  .sub { font-size: 13px; min-height: 18px; }
+  .note { color: var(--muted); font-size: 12px; }
+  .up { color: var(--profit); font-weight: 600; }
+  .down { color: var(--neg); font-weight: 600; }
+  .muted { color: var(--muted); }
+  .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-top: 12px; }
+  .grid.even { grid-template-columns: 1fr 1fr; }
+  .card { padding: 16px; min-width: 0; }
+  h2 { font-size: 16px; margin: 0 0 10px; }
+  .chart { position: relative; height: 290px; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: right;
+           white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; }
+  td.neg { color: var(--neg); }
+  footer { color: var(--muted); font-size: 13px; margin-top: 16px; }
+  @media (max-width: 860px) { .grid, .grid.even { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Online Store: Sales &amp; Profit</h1>
+    <span class="period">01 May 2026 – 31 Oct 2026</span>
+    <span class="badge">Demo data, made up</span>
+  </header>
+
+  <section class="tiles">
+<div class="tile"><div class="label">Net sales</div><div class="value">$100,408</div><div class="sub"><span class="up">▲ 2%</span> <span class=muted>Oct vs Sep</span></div><div class="note">after refunds</div></div>
+<div class="tile"><div class="label">Net profit</div><div class="value">$10,819</div><div class="sub"><span class="down">▼ 20%</span> <span class=muted>Oct vs Sep</span></div><div class="note">after goods, shipping, fees, ads</div></div>
+<div class="tile"><div class="label">Profit margin</div><div class="value">10.8%</div><div class="sub"><span class="down">▼ 22%</span> <span class=muted>Oct vs Sep</span></div><div class="note">net profit / net sales</div></div>
+<div class="tile"><div class="label">Orders</div><div class="value">1,769</div><div class="sub"><span class="up">▲ 8%</span> <span class=muted>Oct vs Sep</span></div><div class="note">4.0% refunded</div></div>
+<div class="tile"><div class="label">Average order</div><div class="value">$59.17</div><div class="sub"><span class="down">▼ 7%</span> <span class=muted>Oct vs Sep</span></div><div class="note">net sales / paid orders</div></div>
+<div class="tile"><div class="label">Ad spend</div><div class="value">$25,237</div><div class="sub"><span class="up">▲ 12%</span> <span class=muted>Oct vs Sep</span></div><div class="note">blended ROAS 4.0x</div></div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h2>Net sales, ad spend and net profit by month</h2>
+      <div class="chart"><canvas id="monthly"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Where each dollar of sales goes</h2>
+      <div class="chart"><canvas id="split"></canvas></div>
+    </div>
+  </section>
+
+  <section class="grid even">
+    <div class="card">
+      <h2>Profit by channel (after ad spend)</h2>
+      <div class="chart"><canvas id="channels"></canvas></div>
+    </div>
+    <div class="card table-wrap">
+      <h2>Channels</h2>
+      <table>
+        <tr><th>Channel</th><th>Orders</th><th>Net sales</th><th>Ad spend</th><th>ROAS</th>
+            <th>Profit</th><th>Margin</th></tr>
+<tr><td>Organic</td><td>557</td><td>$31,575</td><td>$0</td><td>no ads</td><td>$11,306</td><td>35.8%</td></tr>
+<tr><td>Email</td><td>243</td><td>$15,064</td><td>$0</td><td>no ads</td><td>$5,577</td><td>37.0%</td></tr>
+<tr><td>Google Ads</td><td>439</td><td>$24,946</td><td>$7,261</td><td>3.4x</td><td>$1,558</td><td>6.2%</td></tr>
+<tr><td>Instagram Ads</td><td>530</td><td>$28,823</td><td>$17,976</td><td>1.6x</td><td class="neg">-$7,623</td><td>-26.4%</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="card table-wrap" style="margin-top:12px">
+    <h2>Products by gross profit (before ads)</h2>
+    <table>
+      <tr><th>Product</th><th>Units</th><th>Net sales</th><th>Gross profit</th><th>Margin</th></tr>
+<tr><td>Hand Grinder</td><td>308</td><td>$26,433</td><td>$8,758</td><td>33%</td></tr>
+<tr><td>Gift Box</td><td>328</td><td>$23,550</td><td>$8,370</td><td>36%</td></tr>
+<tr><td>Pour-Over Set</td><td>335</td><td>$17,388</td><td>$7,611</td><td>44%</td></tr>
+<tr><td>Travel Tumbler</td><td>344</td><td>$9,541</td><td>$3,510</td><td>37%</td></tr>
+<tr><td>Tea Sampler</td><td>357</td><td>$8,256</td><td>$3,273</td><td>40%</td></tr>
+<tr><td>Coffee Beans 1kg</td><td>319</td><td>$9,696</td><td>$2,695</td><td>28%</td></tr>
+<tr><td>Ceramic Mug</td><td>319</td><td>$5,544</td><td>$1,839</td><td>33%</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    Payment fees: 2.9% + $0.30 per order. Refunded orders: no sales and no goods cost; shipping and fees stay.
+    Built 2026-10-31 19:53 with Python from orders.csv + ad_spend.csv.
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const D = {"months": ["May", "Jun", "Jul", "Aug", "Sep", "Oct"], "sales": [14119.0, 14149.0, 17050.0, 19105.0, 17792.0, 18193.0], "ads": [3404.69, 3673.97, 4038.59, 4371.72, 4608.33, 5140.13], "profit": [1796.88, 1350.45, 2072.11, 2424.62, 1763.72, 1410.81], "channels": ["Organic", "Email", "Google Ads", "Instagram Ads"], "channelProfit": [11306.21, 5576.89, 1558.28, -7622.78], "split": {"Goods": 50407.5, "Ads": 25237.43, "Shipping": 10380.5, "Payment fees": 3563.98, "Net profit": 10818.59}};
+const css = getComputedStyle(document.documentElement);
+const C = (name) => css.getPropertyValue(name).trim();
+const usd = (v) => (v < 0 ? "-$" : "$") + Math.abs(Math.round(v)).toLocaleString("en-US");
+Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
+Chart.defaults.color = C("--muted");
+Chart.defaults.maintainAspectRatio = false;
+const money = { callbacks: { label: (c) => c.dataset.label + ": " + usd(c.parsed.y ?? c.parsed) } };
+
+new Chart(document.getElementById("monthly"), {
+  data: {
+    labels: D.months,
+    datasets: [
+      { type: "bar", label: "Net sales", data: D.sales, backgroundColor: C("--sales") },
+      { type: "bar", label: "Ad spend", data: D.ads, backgroundColor: C("--ads") },
+      { type: "bar", label: "Net profit", data: D.profit,
+        backgroundColor: D.profit.map((v) => v < 0 ? C("--neg") : C("--profit")) },
+    ],
+  },
+  options: { plugins: { tooltip: money },
+             scales: { y: { ticks: { callback: usd }, grid: { color: C("--line") } },
+                       x: { grid: { display: false } } } },
+});
+
+const splitColors = ["#8a94a6", C("--ads"), "#b5bcc9", "#d6dae2", C("--profit")];
+const splitTotal = Object.values(D.split).reduce((a, b) => a + b, 0);
+new Chart(document.getElementById("split"), {
+  type: "doughnut",
+  data: { labels: Object.keys(D.split),
+          datasets: [{ data: Object.values(D.split), backgroundColor: splitColors,
+                       borderColor: C("--card"), borderWidth: 2 }] },
+  options: { cutout: "58%",
+             plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } },
+                        tooltip: { callbacks: { label: (c) => c.label + ": " + usd(c.parsed)
+                          + " (" + (100 * c.parsed / splitTotal).toFixed(1) + "%)" } } } },
+});
+
+new Chart(document.getElementById("channels"), {
+  type: "bar",
+  data: { labels: D.channels,
+          datasets: [{ label: "Profit", data: D.channelProfit,
+                       backgroundColor: D.channelProfit.map(
+                         (v) => v < 0 ? C("--neg") : C("--profit")) }] },
+  options: { indexAxis: "y",
+             plugins: { legend: { display: false },
+                        tooltip: { callbacks: { label: (c) => "Profit: " + usd(c.parsed.x) } } },
+             scales: { x: { ticks: { callback: usd }, grid: { color: C("--line") } },
+                       y: { grid: { display: false } } } },
+});
+</script>
+</body>
+</html>
