@@ -6,6 +6,8 @@
 
 **Hire me:** [Upwork](https://www.upwork.com/freelancers/~012c68804f9b4d4550) · [Fiverr](https://www.fiverr.com/akhmetov_zhangi) · [Telegram @ZhangirAkhmetov](https://t.me/ZhangirAkhmetov)
 
+**[Watch the demo video (mp4)](docs/demo.mp4)**
+
 **Live demo:** https://zhangir777.github.io/sales-profit-dashboard/
 
 ![Dashboard](docs/screenshots/dashboard.png)
